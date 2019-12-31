@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Main</title>
+    <style>
+      .row {
+        display: flex;
+      }
+      .row:last-child .cell {
+        border-bottom-style: solid;
+      }
+      .cell {
+        height: 1rem;
+        width: 1rem;
+        cursor: default;
+        border-color: darkkhaki;
+        border-width: 1px;
+        border-style: solid solid none none;
+      }
+      .cell:first-child {
+        border-left-style: solid;
+      }
+
+      .cell.alive {
+        background-color: cadetblue;
+      }
+      .cell.dead {
+        background-color: cornsilk;
+      }
+    </style>
+    <script type="text/javascript" src="main.js"></script>
+  </head>
+
+  <body>
+    <div id="elm"></div>
+    <script>
+      var app = Elm.Main.init({
+        node: document.getElementById("elm")
+      });
+    </script>
+  </body>
+</html>
