@@ -20,4 +20,6 @@ There is no special build tooling. The Elm compiler is used to spit out a .js fi
 
 The html is static and expects a `main.js` to exist in its directory. The files can then be served by any http server.
 
+There is a build script that will compile and copy the relevent files into a `build` directory. Just run `./build.sh` and point your webserver at `build/`.
+
 [1]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
