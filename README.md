@@ -8,6 +8,10 @@ It renders a resizeable playing board whose state can be evolved by clicking the
 
 Individual cells can be toggled dead or alive by clicking them.
 
+## Demo
+
+[Live demo here][2]
+
 ## Setup
 
 You'll need Elm installed to build this.
@@ -23,3 +27,4 @@ The html is static and expects a `main.js` to exist in its directory. The files 
 There is a build script that will compile and copy the relevent files into a `build` directory. Just run `./build.sh` and point your webserver at `build/`.
 
 [1]: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+[2]: https://gameoflifeelm.netlify.app/
