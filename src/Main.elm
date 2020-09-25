@@ -4,8 +4,9 @@ import Array exposing (Array)
 import Browser
 import Grid exposing (Grid)
 import Html exposing (Html, button, div, input, label, span, text)
-import Html.Attributes exposing (class, placeholder, type_, value)
-import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (class, placeholder, type_, value, selected)
+import Html.Events exposing (onClick, onInput, onCheck)
+import Time
 
 
 
@@ -13,14 +14,15 @@ import Html.Events exposing (onClick, onInput)
 
 
 type alias Model =
-    { grid : Grid Int, size : Int }
+    { grid : Grid Int, size : Int, evolving: Bool }
 
 
+buildGrid : Int -> Grid Int
 buildGrid size = Grid.repeat size size 0
 
 init : Int -> ( Model, Cmd Msg )
 init size =
-    ( { size = size, grid = buildGrid size }, Cmd.none )
+    ( { size = size, grid = buildGrid size, evolving = False }, Cmd.none )
 
 
 
@@ -32,11 +34,12 @@ type Msg
     | Evolve
     | Toggle ( Int, Int )
     | SetSize String
+    | ToggleEvolving
     | Reset
 
 
-update : Msg -> ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
-update msg ( model, _ ) =
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
     case msg of
         Evolve ->
             ( { model | grid = evolve model.grid }, Cmd.none )
@@ -52,6 +55,8 @@ update msg ( model, _ ) =
                 sizeInt = String.toInt size |> Maybe.withDefault model.size
             in
             ( { model | size = sizeInt, grid = buildGrid sizeInt}, Cmd.none )
+
+        ToggleEvolving -> ({ model | evolving = not model.evolving }, Cmd.none)
 
         _ ->
             ( model, Cmd.none )
@@ -137,11 +142,15 @@ countNeighbors grid x y =
 -- VIEW ----
 
 
-view : ( Model, Cmd Msg ) -> Html Msg
-view ( model, _ ) =
+view : Model -> Html Msg
+view model =
     div []
         [ button [ onClick Evolve ] [ text "next" ]
         , button [ onClick Reset ] [ text "reset" ]
+        , label [] [
+            input [ type_ "checkbox", selected model.evolving, onCheck (\_ -> ToggleEvolving) ] []
+            , span [] [ text "Auto evolve"]
+        ]
         , div []
             [ label []
                 [ span [] [ text "Size" ]
@@ -177,14 +186,22 @@ renderCell x y a =
         _ ->
             div [ class "cell dead", onClick (Toggle ( x, y )) ] []
 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    if model.evolving then
+        Time.every 150 (\_ -> Evolve)
+    else
+        Sub.none
 
 
 ---- PROGRAM ----
-
+myinit : () -> (Model, Cmd Msg)
+myinit _ = init 50
 
 main =
-    Browser.sandbox
+    Browser.element
         { view = view
-        , init = init 50
+        , init = myinit
         , update = update
+        , subscriptions = subscriptions
         }
