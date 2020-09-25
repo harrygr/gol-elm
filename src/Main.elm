@@ -16,9 +16,11 @@ type alias Model =
     { grid : Grid Int, size : Int }
 
 
+buildGrid size = Grid.repeat size size 0
+
 init : Int -> ( Model, Cmd Msg )
 init size =
-    ( { size = size, grid = Grid.repeat size size 0 }, Cmd.none )
+    ( { size = size, grid = buildGrid size }, Cmd.none )
 
 
 
@@ -46,7 +48,10 @@ update msg ( model, _ ) =
             init model.size
 
         SetSize size ->
-            ( { model | size = String.toInt size |> Maybe.withDefault model.size }, Cmd.none )
+            let
+                sizeInt = String.toInt size |> Maybe.withDefault model.size
+            in
+            ( { model | size = sizeInt, grid = buildGrid sizeInt}, Cmd.none )
 
         _ ->
             ( model, Cmd.none )
