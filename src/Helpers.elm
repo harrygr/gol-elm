@@ -3,8 +3,8 @@ module Helpers exposing (buildGrid, evolve, toggle)
 import Grid exposing (Grid)
 
 
-buildGrid : Int -> Grid Int
-buildGrid size = Grid.repeat size size 0
+buildGrid : (Int, Int) -> Grid Int
+buildGrid (width, height) = Grid.repeat width height 0
 
 evolve : Grid Int -> Grid Int
 evolve grid =

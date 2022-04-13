@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <title>Game of Life</title>
     <style>
+      body {
+        background-color: #333;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        color: #fff;
+      }
       .row {
         display: flex;
       }
@@ -13,8 +18,9 @@
       .cell {
         height: 1rem;
         width: 1rem;
+        flex-shrink: 0;
         cursor: default;
-        border-color: darkkhaki;
+        border-color: #0D43D3;
         border-width: 1px;
         border-style: solid solid none none;
       }
@@ -23,10 +29,10 @@
       }
 
       .cell.alive {
-        background-color: cadetblue;
+        background-color: #1AEA42;
       }
       .cell.dead {
-        background-color: cornsilk;
+        background-color: #000;
       }
     </style>
     <script type="text/javascript" src="main.js"></script>

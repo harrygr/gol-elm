@@ -18,8 +18,12 @@ view model =
         ]
         , div []
             [ label []
-                [ span [] [ text "Size" ]
-                , input [ placeholder "size", onInput SetSize, type_ "number", value <| String.fromInt model.size ] []
+                [ span [] [ text "Width" ]
+                , input [ placeholder "width", onInput SetWidth, type_ "number", value <| String.fromInt(Tuple.first(model.size)) ] []
+                ],
+                label []
+                [ span [] [ text "Height" ]
+                , input [ placeholder "height", onInput SetHeight, type_ "number", value <| String.fromInt(Tuple.second(model.size)) ] []
                 ]
             ]
         , div

@@ -5,18 +5,19 @@ import Helpers exposing (evolve, toggle, buildGrid)
 
 
 type alias Model =
-    { grid : Grid Int, size : Int, evolving: Bool }
+    { grid : Grid Int, size: (Int, Int), evolving: Bool }
 
 type Msg
     = NoOp
     | Evolve
     | Toggle ( Int, Int )
-    | SetSize String
+    | SetWidth String
+    | SetHeight String
     | ToggleEvolving
     | Reset
 
 
-freshModel : Int -> ( Model, Cmd Msg )
+freshModel : (Int, Int) -> ( Model, Cmd Msg )
 freshModel size =
     ( { size = size, grid = buildGrid size, evolving = False }, Cmd.none )
 
@@ -33,11 +34,23 @@ update msg model =
         Reset ->
             freshModel model.size
 
-        SetSize size ->
+        SetWidth width ->
             let
-                sizeInt = String.toInt size |> Maybe.withDefault model.size
+                currentSize = model.size
+                currentWidth = Tuple.first(currentSize)
+                newWidth = String.toInt width |> Maybe.withDefault(currentWidth)
+                height = Tuple.second(currentSize)
             in
-            ( { model | size = sizeInt, grid = buildGrid sizeInt}, Cmd.none )
+            ( { model | size = (newWidth, height), grid = buildGrid currentSize}, Cmd.none )
+
+        SetHeight height ->
+            let
+                currentSize = model.size
+                currentHeight = Tuple.second(currentSize)
+                newHeight = String.toInt height |> Maybe.withDefault(currentHeight)
+                width = Tuple.first(currentSize)
+            in
+            ( { model | size = (width, newHeight), grid = buildGrid currentSize}, Cmd.none )
 
         ToggleEvolving -> ({ model | evolving = not model.evolving }, Cmd.none)
 

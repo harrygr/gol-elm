@@ -14,7 +14,7 @@ subscriptions model =
         Sub.none
 
 init : () -> ( Model, Cmd Msg )
-init _ = freshModel 50
+init _ = freshModel (83, 40)
 
 main =
     Browser.element
